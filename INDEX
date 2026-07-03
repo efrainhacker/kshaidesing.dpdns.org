@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Sistema Ventas</title>
+<style>body{font-family:Arial;margin:20px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px}input,button{margin:4px}</style>
+</head><body>
+<h2>Sistema de Ventas</h2>
+<input id=c placeholder=Cliente><input id=p placeholder=Producto><input id=pr type=number placeholder=Precio><input id=q type=number value=1>
+<select id=e><option>Debe</option><option>Pagado</option></select>
+<button onclick="agregar()">Agregar</button>
+<table><thead><tr><th>Cliente</th><th>Producto</th><th>Cant.</th><th>Precio</th><th>Total</th><th>Estado</th><th>Ticket</th></tr></thead><tbody id=t></tbody></table>
+<script>
+let ventas=JSON.parse(localStorage.getItem('ventas')||'[]');
+function guardar(){localStorage.setItem('ventas',JSON.stringify(ventas));render();}
+function agregar(){ventas.push({cliente:c.value,producto:p.value,precio:+pr.value,cantidad:+q.value,estado:e.value});guardar();}
+function ticket(v){let w=window.open('');w.document.write('<pre>TICKET\nCliente:'+v.cliente+'\nProducto:'+v.producto+'\nCant:'+v.cantidad+'\nPrecio:$'+v.precio+'\nTotal:$'+(v.precio*v.cantidad)+'</pre>');w.print();}
+function render(){t.innerHTML='';ventas.forEach((v,i)=>t.innerHTML+=`<tr><td>${v.cliente}</td><td>${v.producto}</td><td>${v.cantidad}</td><td>$${v.precio}</td><td>$${v.precio*v.cantidad}</td><td>${v.estado}</td><td><button onclick='ticket(ventas[${i}])'>Imprimir</button></td></tr>`);}
+render();
+</script></body></html>
